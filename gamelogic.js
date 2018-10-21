@@ -296,7 +296,7 @@ $(document).ready(function () {
                 }
             }
             // update score if player loses
-            if (guessLength === 0) {
+            if (guessLength === -1) {
                 losses++;
                 $("#lossesTag").text(losses);
                 $('#wordWas').text(wordUp);
