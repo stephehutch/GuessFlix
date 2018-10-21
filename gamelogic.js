@@ -207,16 +207,12 @@ $(document).ready(function () {
     var losses = 0;
     var wins = 0;
     var guessLength = 0
-    // var userText = document.getElementById("guesedLetters");
-
-    // var userGuess = event.key.textContent.toLowerCase();
-
-    //var currentGuess = event.key
 
 
     $("#NewWordBtn").click(function () {
 
-
+        $("#wordUpTag, #wordWas, #guesedLetters").empty();
+        // console.log(wordUpTag, wordWas, guesedLetters)
 
         var wordUp = netflixList[Math.floor(Math.random() * netflixList.length)];
 
@@ -226,12 +222,8 @@ $(document).ready(function () {
 
         var blanks = [];
 
-        //let goodGuess = 0;
 
-        //let answer = wordUpTag.textContent;
-
-        //var guessesshown = document.getElementById("guessRTag");
-
+        /// Display the correct number of blanks.
         console.log(wordUp);
         for (var i = 0; i < wordLength; i++) {
             blanks.push("__ ")
@@ -241,8 +233,7 @@ $(document).ready(function () {
 
 
         }
-        //guessLength.textContent = guessesshown.textContent
-        //num of guesses stert
+        //Get a number of guesses allowed and display
         if (wordLength <= 6) {
             guessLength = 6
         } else {
@@ -251,18 +242,13 @@ $(document).ready(function () {
 
         $("#guessRTag").text(guessLength);
 
+        //collect and display guessed letter
         document.onkeyup = function () {
             //userText.textContent = event.key
             $("#guessRTag").text(guessLength);
             $("#guesedLetters").append(" " + event.key);
             console.log(guessLength);
 
-
-            ///if else
-            /* if ( userGuess ==== a letter in the wordUp array) {
-            $( all matching letters).replaceWith("event.key");
-            }
-            */
 
             // num of guess remaining
 
@@ -278,6 +264,13 @@ $(document).ready(function () {
                 //console.log(answer)
             }
 
+
+            ///if else
+            /* if ( userGuess ==== a letter in the wordUp array) {
+            $( all matching letters).replaceWith("event.key");
+            }
+            */
+
             // Update the game state with the guess
             for (var j = 0; j < wordLength; j++) {
                 if (wordUp[j] === event.key) {
@@ -286,39 +279,43 @@ $(document).ready(function () {
                     $("blanks[j]").replaceWith(event.key);
                     $("#wordUpTag").text(blanks.join(""));
                     // console.log(wordUpTag.textContent, wordUp);
-
-                    if (wordUpTag.textContent === wordUp) {
-                        wins++;
-                        $("#winTag").text(wins);
-                        $('#wordWas').text(wordUp);
-                        $("#wordUpTag").text("Nice!");
-                        //  console.log(wordUpTag); 
-
-                        if (wins++) {
-                           // alert("Chose a new word")
-                           return "win"
-
-                        }
-
-                    } else if (guessLength === -1) {
-                        losses++;
-                        $("#lossesTag").text(losses);
-                        $('#wordWas').text(wordUp);
-                        $("#wordUpTag").text("The Word Was:");;
-                        // console.log(wordUpTag);
-                        //console.log("you lose!", losses);
-                    } else if (wordUpTag.textContent === "The Word Was:") {
-                        // stop code form updateing until button is pressed again
-                        console.log("lose")
-                        return "lose"
-                    } //else (wordUpTag.textContent === "Nice!") {
-                    // stop code form updateing until button is pressed again
-                    // }
-
-                };
-
+                }
             }
-        }
+
+            //update score if player wins
+            if (wordUpTag.textContent === wordUp) {
+                wins++;
+                $("#winTag").text(wins);
+                $('#wordWas').text(wordUp);
+                $("#wordUpTag").text("Nice!");
+                //  console.log(wordUpTag); 
+                //prevent score update if win
+                if (wins++) {
+                    // alert("Chose a new word")
+                    return "win"
+                }
+            }
+            // update score if player loses
+            if (guessLength === 0) {
+                losses++;
+                $("#lossesTag").text(losses);
+                $('#wordWas').text(wordUp);
+                $("#wordUpTag").text("The Word Was:");;
+                // console.log(wordUpTag);
+                console.log("you lose!", losses);
+            }
+
+            //prevent player from changing score after lose
+            if (wordUpTag.textContent === "The Word Was:") {
+                // stop code form updateing until button is pressed again
+                console.log("lose")
+                return "lose"
+            } //else (wordUpTag.textContent === "Nice!") {
+            // stop code form updateing until button is pressed again
+            // }
+
+        };
+
 
         /// logs
         //console.log("this is a test");
